@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>GTA CLIP AI - Login Instagram</title>
+  <style>
+    body {
+      background: #101014;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 90vh;
+      margin: 0;
+    }
+    main {
+      max-width: 480px;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 { color: #a855f7; }
+    button {
+      background: #7c3aed;
+      color: white;
+      border: 0;
+      border-radius: 9px;
+      padding: 14px 22px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 8px;
+    }
+    #status { color: #bbb; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GTA CLIP AI</h1>
+    <p id="status">Aguardando retorno do login...</p>
+    <button id="continue" hidden>Continuar no GTA CLIP AI</button>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const code = params.get("code");
+    const state = params.get("state");
+    const error = params.get("error_description") || params.get("error");
+
+    const status = document.getElementById("status");
+    const button = document.getElementById("continue");
+
+    if (error) {
+      status.textContent = "O login foi recusado ou apresentou um erro: " + error;
+    } else if (code && state) {
+      status.textContent =
+        "Login recebido! Clique abaixo para retornar ao GTA CLIP AI.";
+      button.hidden = false;
+
+      button.addEventListener("click", () => {
+        const target = new URL("http://127.0.0.1:53682/callback/");
+        target.searchParams.set("code", code);
+        target.searchParams.set("state", state);
+        location.href = target.toString();
+      });
+    } else {
+      status.textContent =
+        "Página de retorno do GTA CLIP AI. Aguardando autenticação.";
+    }
+  </script>
+</body>
+</html>
